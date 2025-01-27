@@ -94,10 +94,15 @@ class Sprint {
     }
 
     public int calculateRemainingEffort() {
-        return tasks.stream()
-                .filter(task -> task.getStatus() != TaskStatus.DONE)
-                .mapToInt(Task::getEstimatedHours)
-                .sum();
+        List<Task> pendingTasks = tasks.stream()
+                                   .filter(task -> task.getStatus() != TaskStatus.DONE)
+                                   .toList();
+    
+    // Calculate the total effort for pending tasks
+        int totalEffort = pendingTasks.stream()
+                                  .mapToInt(Task::getEstimatedHours)
+                                  .sum();
+        return totalEffort;
     }
 
     public String display() {
